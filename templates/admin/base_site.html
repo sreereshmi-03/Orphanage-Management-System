@@ -1,0 +1,21 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}My Custom Admin Dashboard{% endblock %}
+
+{% block branding %}
+  <h1 id="site-name"><a href="{% url 'admin:index' %}">My Custom Admin</a></h1>
+{% endblock %}
+
+{% block nav-global %}
+  <!-- Add your custom navigation or dashboard widgets here -->
+  <div class="custom-dashboard">
+      <p>Welcome to the Custom Admin Dashboard!</p>
+      <!-- Example: Quick links, stats, etc. -->
+  </div>
+{% endblock %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/custom_admin.css' %}">
+{% endblock %}
