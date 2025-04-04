@@ -1,0 +1,436 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');
+
+    /* General Styles */
+    body {
+        font-family: 'Merriweather', serif;
+        background: #cbc69e;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        color: #333;
+    }
+
+    /* Hero Section */
+    .hero-container {
+        position: relative;
+        width: 100%;
+        height: 95vh;
+        overflow: hidden;
+        background: #000;
+    }
+
+    .hero-carousel {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
+    .hero-carousel img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        filter: brightness(0.8);
+    }
+
+    .hero-carousel img.active {
+        opacity: 1;
+    }
+
+   /* Welcome Text */
+   .welcome-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 36px;
+        font-weight: 700;
+        text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.6);
+        color: #fff;
+        opacity: 0;
+        animation: fade-in 1.5s ease-in-out forwards;
+    }
+
+    .subtext {
+        font-size: 18px;
+        margin-top: 10px;
+        opacity: 0.8;
+    }
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+            transform: translate(-50%, -55%);
+        }
+        to {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    /* Stats Section */
+    .stats {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin: 50px 0;
+        font-size: 20px;
+        font-weight: bold;
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.5s ease-in-out;
+    }
+
+    .stats.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .stat-box {
+        background: transparent;
+        padding: 20px;
+        border: solid black;
+        border-radius: 15px;
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+        color: rgb(49, 47, 47);
+        min-width: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .stat-icon {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        position: fixed;
+        bottom: -80px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 20px;
+        transition: bottom 0.5s ease-in-out;
+    }
+
+    .action-buttons.visible {
+        bottom: 20px;
+    }
+
+    .btn {
+        background:transparent;
+        color: white;
+        padding: 12px 24px;
+        font-size: 18px;
+        border: solid white;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: 0.3s;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn:hover {
+        background-color: #00000088;
+        transform: scale(1.05);
+    }
+
+    /* Child Carousel */
+    .carousel-container {
+        width: 80%;
+        margin: auto;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .carousel {
+        display: flex;
+        gap: 15px;
+        overflow: hidden;
+        padding: 20px;
+        white-space: nowrap;
+        scroll-behavior: smooth;
+    }
+
+    .carousel img {
+        height: 220px;
+        border-radius: 15px;
+        transition: 0.3s;
+    }
+
+    .carousel img:hover {
+        transform: scale(1.07);
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .buttons {
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .stats {
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .stat-box {
+            width: 90%;
+            height: auto;
+        }
+    }
+
+
+    .mission {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 18px;
+    color: #444;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.feedback-icon {
+    font-size: 40px;
+    color: #574c2e; /* Use a nice accent color */
+    margin-bottom: 10px;
+}
+
+
+
+.testimonials {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+    font-style: italic;
+}
+
+
+/* Feedback Section */
+/* Feedback Section Animation */
+.feedback-section {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.5s ease-in-out;
+}
+
+.feedback-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.feedback-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.feedback-box {
+    background: transparent;
+    padding: 20px;
+    border: solid black;
+    border-radius: 15px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+    color: rgb(49, 47, 47);
+    min-width: 250px;
+    max-width: 350px;
+    text-align: center;
+}
+
+.feedback-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .feedback-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+
+</style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+
+
+<div class="hero-container">
+    <div class="hero-carousel">
+        {% for image in hero_images %}
+            <img src="{{ image }}" alt="Hero Image" class="{% if forloop.first %}active{% endif %}">
+        {% endfor %}
+    </div>
+
+    <!-- Welcome Text -->
+    <!-- Welcome Text -->
+    <div class="welcome-text">
+        <span id="welcome-message">A home where love never fades.</span>
+        <div class="subtext" id="welcome-subtext">Providing warmth, care, and support to those in need.</div>
+        <a href="{% url 'donate' %}" class="btn">Make a Smile</a>
+    </div>
+
+
+</div>
+
+<!-- Stats Section -->
+<div id="stats" class="stats">
+    <div class="mission">
+        <h2>Our Mission</h2>
+        <p>We are dedicated to providing a safe, loving, and supportive environment for every resident, ensuring their happiness and well-being.</p>
+    </div>
+    
+    <div class="stat-box">
+        <div class="stat-icon">💰</div>
+        <h3>Donations: <br>{{ total_donations }}</h3>
+    </div>
+    <div class="stat-box">
+        <div class="stat-icon">👩‍⚕️</div>
+        <h3>Caretakers: <br>{{ total_caretakers }}</h3>
+    </div>
+    <div class="stat-box">
+        <div class="stat-icon">👶</div>
+        <h3>Children: <br>{{ total_children }}</h3>
+    </div>
+    <div class="mission">
+        <h2>Our Vission</h2>
+        <p>Equipping children with confidence and career opportunities to transition into adulthood successfully..</p>
+    </div>
+    
+</div>
+
+
+<!-- Child Carousel -->
+
+
+<!-- Feedback Section -->
+<!-- Feedback Section -->
+<div id="feedback-section" class="feedback-section">
+    <h2>What Our Supporters Say     <a href="{% url 'submit_feedback' %}" class="btn" style="border: solid rgba(0, 0, 0, 0.297); color: black;">🖊️  Say Something</a></h2>
+
+    <p>Heartwarming stories from those who have been touched by our mission.</p>
+
+    <div class="feedback-container">
+        {% for feedback in feedbacks %}
+        <div class="feedback-box">
+            <div class="feedback-icon">
+                <i class="fas fa-user-circle"></i>  <!-- Proper icon -->
+            </div>
+            <h3>{{ feedback.name }}</h3>
+            <p>"{{ feedback.message }}"</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
+<br>
+<br>
+
+
+
+<!-- Footer -->
+<footer style="background: #333; color: white; padding: 20px; text-align: center; display: flex; align-items: center; justify-content: space-between;">
+    
+    <!-- Left Image -->
+    {% if details.photo1 %}
+        <img src="{{ details.photo1.url }}" alt="Left Footer Image" style="width: 120px; height: 120px; object-fit: cover; border-radius: 10px;">
+    {% endif %}
+
+    <!-- Contact Information -->
+    <div>
+        <h3>{{ details.name }}</h3>
+        <p>Email: <a href="mailto:{{ details.email }}" style="color: #f4b400;">{{ details.email }}</a></p>
+        <p>Phone: <a href="tel:{{ details.phone }}" style="color: #f4b400;">{{ details.phone }}</a></p>
+        <p>Location: {{ details.location }}</p>
+        <p><a href="{{ details.map_link }}" target="_blank" style="color: #f4b400;">View on Google Maps</a></p>
+        <p>&copy; {{ details.name }} | All Rights Reserved {{ now.year }}</p>
+    </div>
+
+    <!-- Right Image -->
+    {% if details.photo2 %}
+        <img src="{{ details.photo2.url }}" alt="Right Footer Image" style="width: 120px; height: 120px; object-fit: cover; border-radius: 10px;">
+    {% endif %}
+
+</footer>
+
+
+<!-- JavaScript -->
+<script>
+    let heroImages = document.querySelectorAll('.hero-carousel img');
+    let welcomeMessage = document.getElementById('welcome-message');
+    let welcomeSubtext = document.getElementById('welcome-subtext');
+    let statsSection = document.getElementById("stats");
+    let actionButtons = document.getElementById("action-buttons");
+    let currentImageIndex = 0;
+
+    let messages = [
+        { text: "A home where love never fades.", sub: "Providing warmth, care, and support to those in need." },
+        { text: "Every child deserves a family.", sub: "Your love can make a difference in someone's life." },
+        { text: "Your kindness changes lives.", sub: "Help us bring smiles and a brighter future." },
+        { text: "Give love, bring hope.", sub: "Together, we create a loving home for all." },
+        { text: "Join us in making a difference.", sub: "Support, adopt, and give back to the community." }
+    ];
+
+    function changeHeroImage() {
+        heroImages[currentImageIndex].classList.remove('active');
+        currentImageIndex = (currentImageIndex + 1) % heroImages.length;
+        heroImages[currentImageIndex].classList.add('active');
+        welcomeMessage.textContent = messages[currentImageIndex].text;
+        welcomeSubtext.textContent = messages[currentImageIndex].sub;
+    }
+
+    setInterval(changeHeroImage, 5000);
+
+window.addEventListener("scroll", function () {
+    let statsRect = statsSection.getBoundingClientRect();
+    let bottomReached = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 20;
+
+    if (statsRect.top < window.innerHeight - 100) {
+        statsSection.classList.add("visible");
+    } else {
+        statsSection.classList.remove("visible");
+    }
+
+
+});
+
+let feedbackSection = document.getElementById("feedback-section");
+
+window.addEventListener("scroll", function () {
+    let feedbackRect = feedbackSection.getBoundingClientRect();
+
+    if (feedbackRect.top < window.innerHeight - 100) {
+        feedbackSection.classList.add("visible");
+    } else {
+        feedbackSection.classList.remove("visible");
+    }
+});
+
+
+
+</script>
+
+{% endblock %}

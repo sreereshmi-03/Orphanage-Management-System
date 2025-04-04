@@ -1,0 +1,173 @@
+{% load static %}  <!-- ✅ This must be at the top -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register User</title>
+
+    <style>
+        /* General Styles */
+        body {
+            background: linear-gradient(to right, #f0f2f5, #dfe3ee);
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: #ffffff;
+            padding: 30px;
+            width: 400px;
+            border-radius: 12px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .form-container:hover {
+            transform: scale(1.02);
+        }
+
+        h2 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* Form Fields */
+        .input-box {
+            position: relative;
+            margin: 12px 0;
+        }
+
+        .input-box input {
+            width: 85%;
+            padding: 12px 45px 12px 15px;
+            border: 1px solid #ced4da;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .input-box input:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.3);
+        }
+
+        /* Icons Inside Inputs */
+        .input-box i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #007bff;
+            font-size: 18px;
+        }
+
+        /* Submit Button */
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        /* Error Message */
+        .error-message {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 500px) {
+            .form-container {
+                width: 90%;
+            }
+        }
+    </style>
+
+    <!-- Font Awesome for Icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Register User</h2>
+        
+        {% if messages %}
+            {% for message in messages %}
+                <p class="error-message">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="input-box">
+                <input type="text" name="first_name" placeholder="First Name" required>
+                <i class="fas fa-user"></i>
+            </div>
+
+            <div class="input-box">
+                <input type="text" name="last_name" placeholder="Last Name" required>
+                <i class="fas fa-user"></i>
+            </div>
+
+            <div class="input-box">
+                <input type="date" name="dob" required>
+                <i class="fas fa-calendar"></i>
+            </div>
+
+            <div class="input-box">
+                <input type="text" name="place" placeholder="Place" required>
+                <i class="fas fa-map-marker-alt"></i>
+            </div>
+
+            <div class="input-box">
+                <input type="text" name="aadhaar_number" placeholder="Aadhaar Number" required>
+                <i class="fas fa-id-card"></i>
+            </div>
+
+            <div class="input-box">
+                <input type="text" name="username" placeholder="Username" required>
+                <i class="fas fa-user-circle"></i>
+            </div>
+
+            <div class="input-box">
+                <input type="password" name="password" placeholder="Password" required>
+                <i class="fas fa-lock"></i>
+            </div>
+
+            <div class="input-box">
+                <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                <i class="fas fa-lock"></i>
+            </div>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+</body>
+</html>

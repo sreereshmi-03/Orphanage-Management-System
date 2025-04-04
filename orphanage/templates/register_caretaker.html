@@ -1,0 +1,209 @@
+{% block content %}
+<header class="page-header">
+    <h1><i class="fa-solid fa-hands-holding-child"></i> Caretaker Registration Portal</h1>
+    <p>Provide the necessary details to register a caretaker in the system.</p>
+</header>
+<div class="container">
+    
+    <h2><i class="fas fa-user-plus"></i> Register Caretaker</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input type="text" name="name" placeholder="Full Name" required>
+        </div>
+
+        <div class="input-group">
+            <i class="fas fa-calendar-alt"></i>
+            <input type="date" name="dob" required>
+        </div>
+
+        <div class="input-group">
+            <i class="fas fa-phone"></i>
+            <input type="text" name="phone_number" placeholder="Phone Number" required>
+        </div>
+
+        <div class="input-group">
+            <i class="fas fa-briefcase"></i>
+            <input type="text" name="experience" placeholder="Experience (years)" required>
+        </div>
+
+        <div class="input-group">
+            <i class="fas fa-id-card"></i>
+            <input type="text" name="aadhaar_number" placeholder="Aadhaar Number" required>
+        </div>
+
+        <div class="input-group">
+            <i class="fas fa-map-marker-alt"></i>
+            <input type="text" name="place" placeholder="Place" required>
+        </div>
+
+        <div class="input-group">
+            <i class="fas fa-graduation-cap"></i>
+            <input type="text" name="education" placeholder="Education" required>
+        </div>
+
+        <div class="input-group">
+            <i class="fas fa-heart"></i>
+            <select name="marital_status">
+                <option value="" disabled selected>Marital Status</option>
+                <option value="Single">Single</option>
+                <option value="Married">Married</option>
+            </select>
+        </div>
+
+        <div class="file-upload">
+            <label><i class="fas fa-id-badge"></i> ID Proof:</label>
+            <input type="file" name="id_proof" id="id_proof" required>
+            <label for="id_proof" class="custom-file-button"><i class="fas fa-upload"></i> Choose File</label>
+        </div>
+
+        <div class="file-upload">
+            <label><i class="fas fa-file-alt"></i> Experience Certificate:</label>
+            <input type="file" name="experience_certificate" id="experience_certificate" required>
+            <label for="experience_certificate" class="custom-file-button"><i class="fas fa-upload"></i> Choose File</label>
+        </div>
+
+        <button type="submit"><i class="fas fa-check-circle"></i> Register</button>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #f8e5b2;
+        color: #4a3f35;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .container {
+        width: 50%;
+        margin: auto;
+        background: #f1c27d;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(255, 193, 7, 0.3);
+        text-align: center;
+    }
+
+    .page-header {
+        background: linear-gradient(to right, #ffeebd, #dfc873);
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    .page-header h1 {
+        font-size: 28px;
+        color: #35383b;
+        margin: 0;
+        text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.6);
+    }
+    
+    .page-header p {
+        font-size: 16px;
+        color: #555;
+        margin-top: 5px;
+    }
+
+    h2 {
+        color: #8d6e48;
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+
+    .input-group {
+        display: flex;
+        align-items: center;
+        background: #f5d68f;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 15px;
+        transition: 0.3s;
+        border: solid 1px #8d6e48;
+    }
+
+    .input-group:hover {
+        box-shadow: 0 0 10px rgba(255, 193, 7, 0.4);
+    }
+
+    .input-group i {
+        color: #8d6e48;
+        padding-right: 10px;
+        font-size: 18px;
+    }
+
+     input, select {
+        width: 100%;
+        background:none;
+        border: none;
+        color: #4a3f35;
+        outline: none;
+        font-size: 16px;
+    }
+
+    select {
+        cursor: pointer;
+    }
+
+    /* Custom File Upload */
+    .file-upload {
+        text-align: left;
+        margin-bottom: 15px;
+    }
+
+    .file-upload input[type="file"] {
+        display: none;
+    }
+
+    .custom-file-button {
+        display: inline-block;
+        background: #d4a373;
+        color: #4a3f35;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .custom-file-button:hover {
+        background: #b68958;
+        box-shadow: 0 0 10px rgba(255, 193, 7, 0.3);
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        background: #e9a45d;
+        border: none;
+        color: #4a3f35;
+        font-size: 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background: #c98b4a;
+        box-shadow: 0 0 15px rgba(255, 193, 7, 0.4);
+    }
+
+    button i {
+        margin-right: 8px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .container {
+            width: 90%;
+        }
+    }
+</style>
+
+<!-- FontAwesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+{% endblock %}

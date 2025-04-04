@@ -1,0 +1,120 @@
+{% block content %}
+<style>
+    body {
+        font-family: 'Merriweather', serif;
+        background: #e3dca6;
+        text-align: center;
+        color: #333;
+    }
+
+    .header-container {
+        background: rgba(252, 224, 99, 0.807);
+        padding: 20px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-container h1 {
+        font-size: 28px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .search-container {
+        margin: 20px auto;
+        width: 80%;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .search-container input {
+        padding: 8px;
+        font-size: 16px;
+        border: 1px solid #333;
+        border-radius: 5px;
+    }
+
+    .table-container {
+        margin: 20px auto;
+        width: 80%;
+        background: rgba(252, 224, 99, 0.807);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        border: 1px solid #333;
+    }
+
+    th {
+        background: #a9902ccf;
+    }
+</style>
+
+<div class="header-container">
+    <h1>Adopted Children Records</h1>
+</div>
+
+<div class="search-container">
+    <input type="text" id="searchName" placeholder="Search by Name" onkeyup="filterTable()">
+    <input type="date" id="searchDate" onchange="filterTable()">
+</div>
+
+<div class="table-container">
+    <table id="recordsTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Health Status</th>
+                <th>Date of Adoption</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for child in adopted_children %}
+            <tr>
+                <td>{{ child.name }}</td>
+                <td>{{ child.age }}</td>
+                <td>{{ child.health_status }}</td>
+                <td data-date="{{ child.date_deleted|date:'Y-m-d' }}">{{ child.date_deleted }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No adopted children records available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function filterTable() {
+        let nameInput = document.getElementById("searchName").value.toLowerCase();
+        let dateInput = document.getElementById("searchDate").value;
+        let table = document.getElementById("recordsTable");
+        let rows = table.getElementsByTagName("tr");
+        
+        for (let i = 1; i < rows.length; i++) {
+            let nameCell = rows[i].getElementsByTagName("td")[0];
+            let dateCell = rows[i].getElementsByTagName("td")[3];
+            
+            if (nameCell && dateCell) {
+                let nameText = nameCell.textContent.toLowerCase();
+                let dateText = dateCell.getAttribute("data-date");
+                
+                let nameMatch = nameText.includes(nameInput);
+                let dateMatch = !dateInput || dateText === dateInput;
+                
+                rows[i].style.display = nameMatch && dateMatch ? "" : "none";
+            }
+        }
+    }
+</script>
+{% endblock %}

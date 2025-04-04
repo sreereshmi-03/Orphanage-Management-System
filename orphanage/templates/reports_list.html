@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Child Reports</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        .caretaker-name {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .report-title {
+            font-weight: bold;
+        }
+        .view-btn {
+            background: #28a745;
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            margin: 15% auto;
+            text-align: center;
+            position: relative;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Child Reports</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Report Title</th>
+                    <th>Caretaker</th>
+                    <th>Child</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in reports %}
+                <tr>
+                    <td class="report-title">{{ report.title }}</td>
+                    <td class="caretaker-name">{{ report.caretaker_name }}</td>
+                    <td class="caretaker-name">{{ report.child_name }}</td>
+                    <td>{{ report.created_at|date:"Y-m-d" }}</td>
+                    <td><button class="view-btn" onclick="openReportModal('{{ report.id }}')">View</button></td>
+                </tr>
+
+                <!-- Report Modal -->
+                <div id="report-modal-{{ report.id }}" class="modal">
+                    <div class="modal-content">
+                        <span class="close-btn" onclick="closeReportModal('{{ report.id }}')">&times;</span>
+                        <h2>{{ report.title }}</h2>
+                        <p><strong>Caretaker:</strong> {{ report.caretaker_name }}</p>
+                        <p><strong>Child:</strong> {{ report.child_name }}</p>
+                        <p><strong>Date:</strong> {{ report.created_at|date:"Y-m-d" }}</p>
+                        <p><strong>Description:</strong></p>
+                        <p>{{ report.content }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function openReportModal(reportId) {
+            document.getElementById("report-modal-" + reportId).style.display = "block";
+        }
+
+        function closeReportModal(reportId) {
+            document.getElementById("report-modal-" + reportId).style.display = "none";
+        }
+    </script>
+</body>
+</html>

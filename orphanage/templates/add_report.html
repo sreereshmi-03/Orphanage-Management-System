@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Add Report for {{ caretaker.name }}</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Report Details</label>
+            <textarea name="report" class="form-control" rows="4" placeholder="Enter report details..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Report</button>
+        <a href="{% url 'caretaker_dashboard' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

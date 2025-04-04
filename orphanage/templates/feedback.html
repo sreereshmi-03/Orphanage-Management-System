@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: rgb(181, 165, 120);
+            margin: 0;
+        }
+        .container {
+            padding-right: 40px;
+            background: transparent;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.674);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #444;
+        }
+        input, textarea {
+            background: transparent;
+            color: black;
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #000000;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: 0.3s ease-in-out;
+        }
+        input:focus, textarea:focus {
+            border-color: #2575fc;
+            outline: none;
+            box-shadow: 0 0 8px rgba(37, 117, 252, 0.2);
+        }
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 16px;
+            width: 100%;
+            transition: 0.3s ease;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .message {
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .success {
+            color: #28a745;
+        }
+        .error {
+            color: #d9534f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Submit Your Feedback</h2>
+        <div class="input-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" placeholder="Enter your name">
+        </div>
+        <div class="input-group">
+            <label for="message">Your Feedback</label>
+            <textarea id="message" rows="4" placeholder="Write your feedback"></textarea>
+        </div>
+        <button onclick="submitFeedback()">Submit</button>
+        <div class="message" id="responseMessage"></div>
+    </div>
+    
+    <script>
+        function submitFeedback() {
+            let name = document.getElementById('name').value.trim();
+            let message = document.getElementById('message').value.trim();
+            let responseMessage = document.getElementById('responseMessage');
+
+            if (!name || !message) {
+                responseMessage.innerHTML = '<span class="error">All fields are required!</span>';
+                return;
+            }
+
+            $.ajax({
+                url: "{% url 'submit_feedback' %}",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ name: name, message: message }),
+                headers: { "X-CSRFToken": getCookie("csrftoken") },
+                success: function(response) {
+                    if (response.success) {
+                        responseMessage.innerHTML = '<span class="success">Thank you for your feedback! ✅</span>';
+                        document.getElementById('name').value = '';
+                        document.getElementById('message').value = '';
+                    } else {
+                        responseMessage.innerHTML = '<span class="error">' + response.error + '</span>';
+                    }
+                }
+            });
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                let cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    let cookie = cookies[i].trim();
+                    if (cookie.startsWith(name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+</html>

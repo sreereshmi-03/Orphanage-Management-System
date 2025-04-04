@@ -1,0 +1,174 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Orphanage Management{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f9e79f;
+            color: #2c3e50;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+        .header {
+            margin-bottom: 20px;
+        }
+        .header h2 {
+            font-size: 28px;
+            color: #d68910;
+        }
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-items: center;
+        }
+        .summary-card {
+            width: 200px;
+            height: 80px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .children { background: #f1c40f; color: #2c3e50; }
+        .caretakers { background: #2ecc71; }
+        .donations { background: #e74c3c; }
+        .logout {
+            background: #3498db;
+            cursor: pointer;
+        }
+        .logout a {
+            color: white;
+            text-decoration: none;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            justify-items: center;
+            margin-bottom: 30px;
+        }
+        .option-box {
+            width: 100px;
+            height: 100px;
+            background: #f4d03f;
+            border-radius: 50%;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .option-box:hover {
+            background: #f1c40f;
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(243, 156, 18, 0.7);
+        }
+        .option-box i {
+            font-size: 30px;
+            color: #2c3e50;
+        }
+        .option-box a {
+            text-decoration: none;
+            font-size: 14px;
+            color: #2c3e50;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .donation-list {
+            margin-top: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+        }
+        .donation-list h3 {
+            color: #d68910;
+        }
+        .donation-item {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .donation-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Admin Dashboard</h2>
+        </div>
+        <div class="summary">
+            <div class="summary-card children"><i class="fas fa-child"></i> Total Children: <br>{{ total_children }}</div>
+            <div class="summary-card caretakers"><i class="fas fa-user"></i> Total Caretakers: <br>{{ total_caretakers }}</div>
+            <div class="summary-card donations"><i class="fas fa-donate"></i> Total Donations: <br>{{ total_donations }}</div>
+            <div class="summary-card logout"><i class="fa-solid fa-sign-out-alt"></i> <a href="{% url 'logout' %}">Logout</a></div>
+        </div>
+        <div class="options">
+            <div class="option-box">
+                <i class="fa-solid fa-child"></i>
+                <a href="{% url 'register_child' %}">Add Child</a>
+            </div>
+            <div class="option-box">
+                <i class="fa-solid fa-user-nurse"></i>
+                <a href="{% url 'register_caretaker' %}">Add Caretaker</a>
+            </div>
+            <div class="option-box">
+                <i class="fa-solid fa-users"></i>
+                <a href="{% url 'fetch_caretakers' %}">Caretakers List</a>
+            </div>
+            <div class="option-box">
+                <i class="fa-solid fa-baby"></i>
+                <a href="{% url 'fetch_admin_children' %}">Children List</a>
+            </div>
+            <div class="option-box">
+                <i class="fa-solid fa-heart"></i>
+                <a href="{% url 'fetch_adoption_requests' %}">Adoption Requests</a>
+            </div>
+            <div class="option-box">
+                <i class="fa-solid fa-file-alt"></i>
+                <a href="{% url 'fetch_reports' %}">Reports</a>
+            </div>
+            <div class="option-box">
+                <i class="fa-solid fa-child"></i>
+                <a href="{% url 'adopted_children_list' %}">View Adopted Children</a>
+            </div>
+            
+        </div>
+        <div class="donation-list">
+            <h3>Recent Donations</h3>
+            {% for donation in donations %}
+                <div class="donation-item">
+                    <strong>{{ donation.user.username }}</strong> donated <strong>${{ donation.amount }}</strong> on {{ donation.date }}
+                    {% if donation.message %}<br><em>"{{ donation.message }}"</em>{% endif %}
+                </div>
+            {% empty %}
+                <p>No donations yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

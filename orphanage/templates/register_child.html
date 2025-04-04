@@ -1,0 +1,194 @@
+{% block content %}
+<div class="page-container">
+    <header class="page-header">
+        <h1><i class="fa-solid fa-hands-holding-child"></i> Child Registration Portal</h1>
+        <p>Provide the necessary details to register a child in the system.</p>
+    </header>
+    
+    <div class="form-container">
+        <h2><i class="fa-solid fa-child"></i> Register Child</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" name="name" placeholder="Full Name" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fa-solid fa-calendar"></i>
+                <input type="date" name="dob" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fa-solid fa-heartbeat"></i>
+                <input type="text" name="health_status" placeholder="Health Status" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fa-solid fa-user-tie"></i>
+                <select name="caretaker" required>
+                    <option value="" disabled selected>Select Caretaker</option>
+                    {% for caretaker in caretakers %}
+                    <option value="{{ caretaker.id }}">{{ caretaker.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <label class="file-label"><i class="fa-solid fa-camera"></i> Upload Photo
+                <input type="file" name="photo" required>
+            </label>
+
+            <label class="file-label"><i class="fa-solid fa-images"></i> Upload Additional Photos
+                <input type="file" name="additional_photos" multiple>
+            </label>
+
+            <button type="submit"><i class="fa-solid fa-paper-plane"></i> Register</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: 'Merriweather', serif;
+        background: #f8f1e4;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        color: #333;
+    }
+    
+    .page-container {
+        padding: 30px 15px;
+    }
+    
+    .page-header {
+        background: linear-gradient(to right, #b89f5d, #e3dca6);
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+        margin-bottom: 20px;
+    }
+    
+    .page-header h1 {
+        font-size: 28px;
+        color: #35383b;
+        margin: 0;
+        text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.6);
+    }
+    
+    .page-header p {
+        font-size: 16px;
+        color: #555;
+        margin-top: 5px;
+    }
+    
+    .form-container {
+        max-width: 450px;
+        margin: auto;
+        padding: 25px;
+        background: white;
+        border-radius: 12px;
+        color: black;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 22px;
+        margin-bottom: 20px;
+        color: #35383b;
+    }
+
+    .input-group {
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 12px;
+        margin: 12px 0;
+        border-radius: 8px;
+        border: solid 1px black;
+        transition: 0.3s;
+    }
+
+    .input-group i {
+        margin-right: 10px;
+        color: #6d5e3f;
+        font-size: 18px;
+    }
+
+    .input-group input, .input-group select {
+        width: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: black;
+        font-size: 16px;
+        padding: 5px;
+    }
+
+    .input-group select {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        padding: 8px;
+    }
+
+    .input-group:hover {
+        background: rgba(255, 255, 255, 0.3);
+    }
+
+    .file-label {
+        display: block;
+        background: #e3c27e;
+        color: black;
+        padding: 12px;
+        text-align: center;
+        margin: 12px 0;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 16px;
+        font-weight: bold;
+        border: solid 1px black;
+    }
+
+    .file-label:hover {
+        background: #b89f5d;
+    }
+
+    .file-label input {
+        display: none;
+    }
+
+    button {
+        width: 100%;
+        background: linear-gradient(to right, #a9902ccf, #6d5e3f);
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        color: white;
+        cursor: pointer;
+        transition: 0.3s;
+        font-weight: bold;
+        text-transform: uppercase;
+        border: solid 1px black;
+    }
+
+    button:hover {
+        background: linear-gradient(to right, #6d5e3f, #52422e);
+        transform: scale(1.05);
+    }
+
+    @media (max-width: 500px) {
+        .form-container {
+            width: 90%;
+            padding: 20px;
+        }
+        .file-label {
+            font-size: 14px;
+        }
+    }
+</style>
+
+{% endblock %}

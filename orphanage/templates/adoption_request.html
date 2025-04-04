@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    /* Container */
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Form Heading */
+    .container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    /* Input Fields */
+    input, textarea, select {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: 0.3s;
+    }
+
+    input:focus, textarea:focus {
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.3);
+    }
+
+    textarea {
+        height: 100px;
+        resize: none;
+    }
+
+    /* Labels */
+    label {
+        font-weight: bold;
+        margin-top: 10px;
+        display: block;
+    }
+
+    /* File Upload Buttons */
+    input[type="file"] {
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    /* Submit Button */
+    button {
+        width: 100%;
+        background-color: #007bff;
+        color: white;
+        padding: 14px;
+        border: none;
+        border-radius: 6px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .container {
+            width: 90%;
+            padding: 20px;
+        }
+    }
+</style>
+
+<div class="container">
+    <h2>Adoption Request</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="child_id" value="{{ child_id }}">
+        <input type="text" name="child_name" value="{{ child_name }}" readonly>
+        <input type="number" name="child_age" value="{{ child_age }}" readonly>
+
+        <input type="text" name="name" placeholder="Full Name" required>
+        <input type="date" name="dob" required>
+        <input type="number" name="family_members" placeholder="Number of Family Members" required>
+        <textarea name="reason" placeholder="Reason for Adoption" required></textarea>
+        <input type="number" name="annual_income" placeholder="Annual Income" required>
+        <input type="text" name="job_name" placeholder="Job Title" required>
+        <input type="text" name="company" placeholder="Company Name" required>
+        <input type="text" name="aadhaar_number" placeholder="Aadhaar Number" required>
+        <input type="text" name="phone_number" placeholder="Phone Number" required>
+        <input type="email" name="email_id" placeholder="Email ID" required>
+
+        <label>ID Proof:</label>
+        <input type="file" name="id_proof" required>
+
+        <label>Income Certificate:</label>
+        <input type="file" name="income_certificate" required>
+
+        <label>Salary Certificate:</label>
+        <input type="file" name="salary_certificate">
+
+        <button type="submit">Submit Request</button>
+    </form>
+</div>
+
+{% endblock %}
